@@ -76,10 +76,12 @@ class PrettyUrlsControllerTest extends WebTestCase
         $client = static::createClient();
         $client->followRedirects();
 
-        $client->request('GET', '/admin/pretty/urls');
+        $crawler = $client->request('GET', '/admin/pretty/urls');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Welcome to EasyAdmin 4');
+
+        $this->assertSame('http://localhost/admin/pretty/urls/blog_post/', $crawler->filter('li.menu-item a:contains("Blog Posts")')->attr('href'));
+        $this->assertSame('http://localhost/admin/pretty/urls/category/', $crawler->filter('li.menu-item a:contains("Categories")')->attr('href'));
     }
 
     public function testCusomizedWelcomePage()
